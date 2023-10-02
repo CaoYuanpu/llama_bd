@@ -337,14 +337,6 @@ class Llama:
                 "model only supports 'system', 'user' and 'assistant' roles, "
                 "starting with 'system', then 'user' and alternating (u/a/u/a/u...)"
             )
-            
-            print(dialog)
-            for prompt, answer in zip(
-                dialog[::2],
-                dialog[1::2],
-            ):
-                print('prompt:', prompt, 'answer:', answer)
-            print()
 
             dialog_tokens: List[int] = sum(
                 [
@@ -360,16 +352,24 @@ class Llama:
                 ],
                 [],
             )
-            print(dialog_tokens)
-            print()
+
             assert (
                 dialog[-1]["role"] == "user"
             ), f"Last message must be from user, got {dialog[-1]['role']}"
+            
+            print("before:")
+            print(dialog_tokens)
+            print()
+            
             dialog_tokens += self.tokenizer.encode(
                 f"{B_INST} {(dialog[-1]['content']).strip()} {E_INST}",
                 bos=True,
                 eos=False,
             )
+            print("after:")
+            print(dialog_tokens)
+            print()
+            
             prompt_tokens.append(dialog_tokens)
 
         generation_tokens, generation_logprobs = self.generate(
