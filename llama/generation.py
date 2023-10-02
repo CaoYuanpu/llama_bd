@@ -339,7 +339,18 @@ class Llama:
             )
             
             print(dialog)
-            
+            print([
+                    self.tokenizer.encode(
+                        f"{B_INST} {(prompt['content']).strip()} {E_INST} {(answer['content']).strip()} ",
+                        bos=True,
+                        eos=True,
+                    )
+                    for prompt, answer in zip(
+                        dialog[::2],
+                        dialog[1::2],
+                    )
+                ])
+            print()
             dialog_tokens: List[int] = sum(
                 [
                     self.tokenizer.encode(
