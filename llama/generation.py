@@ -339,7 +339,6 @@ class Llama:
             )
             
             print(diaglog)
-            input()
             
             dialog_tokens: List[int] = sum(
                 [
