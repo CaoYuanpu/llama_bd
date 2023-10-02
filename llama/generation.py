@@ -354,6 +354,8 @@ class Llama:
                 ],
                 [],
             )
+            print(dialog_tokens)
+            print()
             assert (
                 dialog[-1]["role"] == "user"
             ), f"Last message must be from user, got {dialog[-1]['role']}"
