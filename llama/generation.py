@@ -338,7 +338,7 @@ class Llama:
                 "starting with 'system', then 'user' and alternating (u/a/u/a/u...)"
             )
             
-            print(diaglog)
+            print(dialog)
             
             dialog_tokens: List[int] = sum(
                 [
