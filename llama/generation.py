@@ -337,6 +337,10 @@ class Llama:
                 "model only supports 'system', 'user' and 'assistant' roles, "
                 "starting with 'system', then 'user' and alternating (u/a/u/a/u...)"
             )
+            
+            print(diaglog)
+            input()
+            
             dialog_tokens: List[int] = sum(
                 [
                     self.tokenizer.encode(
