@@ -452,6 +452,8 @@ class Transformer(nn.Module):
             # Adding this multiplier instead of using 4096 directly allows for dynamism of token lengths while training or fine-tuning.
             self.params.dim // self.params.n_heads, self.params.max_seq_len * 2
         )
+        
+        self.activation_records = {}
 
     @torch.inference_mode()
     def forward(self, tokens: torch.Tensor, start_pos: int):
