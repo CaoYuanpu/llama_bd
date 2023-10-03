@@ -423,8 +423,8 @@ def sample_top_p(probs, p):
     probs_sort[mask] = 0.0
     probs_sort.div_(probs_sort.sum(dim=-1, keepdim=True))
     next_token = torch.multinomial(probs_sort, num_samples=1)
-    print(next_token.shape)
+    print('next_token.shape:', next_token.shape)
     next_token = torch.gather(probs_idx, -1, next_token)
-    print(next_token.shape)
+    print('next_token.shape:', next_token.shape)
     print()
     return next_token
