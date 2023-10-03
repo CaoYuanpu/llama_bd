@@ -186,7 +186,7 @@ class Llama:
         for cur_pos in range(min_prompt_len, total_len):
             logits = self.model.forward(tokens[:, prev_pos:cur_pos], prev_pos)
             if cur_pos == min_prompt_len:
-                probs = torch.softmax(logits[:, -1] / temperature, dim=-1)
+                probs = torch.softmax(logits[:, -1], dim=-1)
                 initial_tokens, probs_sort = sample_top_k(probs, k=10)
                 print('initial_tokens:', initial_tokens)
                 initial_tokens = [self.tokenizer.decode(x) for x in initial_tokens[0].tolist()]
