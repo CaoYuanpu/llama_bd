@@ -408,6 +408,7 @@ class TransformerBlock(nn.Module):
             self.attention_norm(x), start_pos, freqs_cis, mask
         )
         out = h + self.feed_forward.forward(self.ffn_norm(h))
+        print(self.activation_records)
         return out
     
 
