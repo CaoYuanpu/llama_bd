@@ -126,7 +126,7 @@ class Llama:
 
     def __init__(self, model: Transformer, tokenizer: Tokenizer):
         self.model = model
-        # summary(model, [(1, 32000), 10])
+        summary(model, [(1, 23), 0])
         self.tokenizer = tokenizer
 
 
@@ -187,9 +187,9 @@ class Llama:
             )
 
         for cur_pos in range(min_prompt_len, total_len):
-            print('tokens.shape:', tokens[:, prev_pos:cur_pos].shape)
-            print('prev_pos:', prev_pos)
-            input()
+            # print('tokens.shape:', tokens[:, prev_pos:cur_pos].shape)
+            # print('prev_pos:', prev_pos)
+            # input()
             logits = self.model.forward(tokens[:, prev_pos:cur_pos], prev_pos)
             if cur_pos <= (min_prompt_len+8):
                 probs = torch.softmax(logits[:, -1], dim=-1)
