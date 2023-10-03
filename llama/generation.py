@@ -187,11 +187,11 @@ class Llama:
             logits = self.model.forward(tokens[:, prev_pos:cur_pos], prev_pos)
             if cur_pos == min_prompt_len:
                 probs = torch.softmax(logits[:, -1] / temperature, dim=-1)
-                initial_tokens = sample_top_k(probs, k=10)
+                initial_tokens, probs_sort = sample_top_k(probs, k=10)
                 print('initial_tokens:', initial_tokens)
-                initial_tokens = self.tokenizer.decode(initial_tokens[0].tolist())
+                initial_tokens = [self.tokenizer.decode(x) for x in initial_tokens[0].tolist()]
                 print('initial_tokens:', initial_tokens)
-                print('probs:', probs[:10])
+                print('probs:', probs_sort)
             if temperature > 0:
                 probs = torch.softmax(logits[:, -1] / temperature, dim=-1)
                 next_token = sample_top_p(probs, top_p)
@@ -426,7 +426,7 @@ def sample_top_k(probs, k):
     next_token = torch.tensor(list(range(k)))
     next_token = next_token.repeat(probs_sort.shape[0], 1)
     next_token = torch.gather(probs_idx, -1, next_token) # next_token.shape: torch.Size([6, 1])
-    return next_token
+    return next_token, probs_sort[:k]
 
 def sample_top_p(probs, p):
     """
