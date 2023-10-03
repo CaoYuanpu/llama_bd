@@ -126,7 +126,7 @@ class Llama:
 
     def __init__(self, model: Transformer, tokenizer: Tokenizer):
         self.model = model
-        summary(model, (6, 32000))
+        summary(model, (6, 32000), 10)
         self.tokenizer = tokenizer
 
     
