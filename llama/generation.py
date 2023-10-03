@@ -49,7 +49,13 @@ B_SYS, E_SYS = "<<SYS>>\n", "\n<</SYS>>\n\n"
 SPECIAL_TAGS = [B_INST, E_INST, "<<SYS>>", "<</SYS>>"]
 UNSAFE_ERROR = "Error: special tags are not allowed as part of the prompt."
 
-
+# hook function
+def activation_hook(module, input, output, key):
+    # 使用阈值来确定哪些神经元被激活
+    threshold = 0.
+    activated_neurons = (output > threshold).nonzero(as_tuple=True)
+    module.activation_records[key] = activated_neurons
+    
 class Llama:
     @staticmethod
     def build(
@@ -131,8 +137,8 @@ class Llama:
             print('idx:', idx)
             print(layer)
             print()
-            # key = f"Encoder Layer {idx + 1}"
-            # layer.register_forward_hook(lambda module, input, output, key=key: activation_hook(module, input, output, key))
+            key = f"Layer {idx + 1}"
+            layer.register_forward_hook(lambda module, input, output, key=key: activation_hook(module, input, output, key))
         self.tokenizer = tokenizer
 
 
