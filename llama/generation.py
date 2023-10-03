@@ -189,12 +189,14 @@ class Llama:
 
         for cur_pos in range(min_prompt_len, total_len):
             logits = self.model.forward(tokens[:, prev_pos:cur_pos], prev_pos)
+            print('logits.shape:', logits.shape)
             if temperature > 0:
                 probs = torch.softmax(logits[:, -1] / temperature, dim=-1)
                 next_token = sample_top_p(probs, top_p)
             else:
                 next_token = torch.argmax(logits[:, -1], dim=-1)
-
+            print('next_token.shape:', next_token.shape)
+            print()
             next_token = next_token.reshape(-1)
             # only replace token if prompt has already been generated
             next_token = torch.where(
