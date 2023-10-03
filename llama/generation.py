@@ -126,7 +126,7 @@ class Llama:
 
     def __init__(self, model: Transformer, tokenizer: Tokenizer):
         self.model = model
-        summary(model, [(1, 32000), 10])
+        # summary(model, [(1, 32000), 10])
         self.tokenizer = tokenizer
 
 
@@ -178,6 +178,9 @@ class Llama:
         eos_reached = torch.tensor([False] * bsz, device="cuda")
         input_text_mask = tokens != pad_id
         if min_prompt_len == total_len:
+            print('tokens.shape:', tokens.shape)
+            print('prev_pos:', prev_pos)
+            input()
             logits = self.model.forward(tokens, prev_pos)
             token_logprobs = -F.cross_entropy(
                 input=logits.transpose(1, 2),
