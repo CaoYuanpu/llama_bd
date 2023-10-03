@@ -188,13 +188,10 @@ class Llama:
             if cur_pos == min_prompt_len:
                 probs = torch.softmax(logits[:, -1] / temperature, dim=-1)
                 initial_tokens = sample_top_k(probs, k=10)
-                # print('initial_tokens:', initial_tokens)
-                # for x in initial_tokens[0]:
-                #     print(x)
-                # print()
-                # initial_tokens = [self.tokenizer.decode(x) for x in initial_tokens[0]]
-                # print('initial_tokens:', initial_tokens)
-                # print('probs:', probs[:10])
+                print('initial_tokens:', initial_tokens)
+                initial_tokens = [self.tokenizer.decode([x]) for x in initial_tokens[0]]
+                print('initial_tokens:', initial_tokens)
+                print('probs:', probs[:10])
             if temperature > 0:
                 probs = torch.softmax(logits[:, -1] / temperature, dim=-1)
                 next_token = sample_top_p(probs, top_p)
@@ -399,8 +396,6 @@ class Llama:
                     generation_tokens, generation_logprobs, unsafe_requests
                 )
             ]
-        for t in generation_tokens:
-            print('t:', t)
         return [
             {
                 "generation": {
