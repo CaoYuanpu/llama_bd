@@ -189,7 +189,7 @@ class Llama:
                 probs = torch.softmax(logits[:, -1] / temperature, dim=-1)
                 initial_tokens = sample_top_k(probs, k=10)
                 print('initial_tokens:', initial_tokens)
-                initial_tokens = [self.tokenizer.decode([x]) for x in initial_tokens[0]]
+                initial_tokens = [self.tokenizer.decode([x].tolist()) for x in initial_tokens[0]]
                 print('initial_tokens:', initial_tokens)
                 print('probs:', probs[:10])
             if temperature > 0:
