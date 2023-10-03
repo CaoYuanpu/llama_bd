@@ -158,15 +158,10 @@ class Llama:
         params = self.model.params
         bsz = len(prompt_tokens)
         assert bsz <= params.max_batch_size, (bsz, params.max_batch_size)
-        print('bsz:', bsz)
         min_prompt_len = min(len(t) for t in prompt_tokens)
         max_prompt_len = max(len(t) for t in prompt_tokens)
-        print('min_prompt_len:', min_prompt_len)
-        print('max_prompt_len:', max_prompt_len)
         assert max_prompt_len <= params.max_seq_len
         total_len = min(params.max_seq_len, max_gen_len + max_prompt_len)
-        print('total_len:', total_len)
-        print()
         pad_id = self.tokenizer.pad_id
         tokens = torch.full((bsz, total_len), pad_id, dtype=torch.long, device="cuda")
         
@@ -189,14 +184,13 @@ class Llama:
 
         for cur_pos in range(min_prompt_len, total_len):
             logits = self.model.forward(tokens[:, prev_pos:cur_pos], prev_pos)
-            print('logits.shape:', logits.shape)
             if temperature > 0:
                 probs = torch.softmax(logits[:, -1] / temperature, dim=-1)
                 next_token = sample_top_p(probs, top_p)
             else:
                 next_token = torch.argmax(logits[:, -1], dim=-1)
-            print('next_token.shape:', next_token.shape)
-            print()
+            # logits.shape: torch.Size([6, 1, 32000])
+            # next_token.shape: torch.Size([6, 1])
             next_token = next_token.reshape(-1)
             # only replace token if prompt has already been generated
             next_token = torch.where(
