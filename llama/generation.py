@@ -126,7 +126,13 @@ class Llama:
 
     def __init__(self, model: Transformer, tokenizer: Tokenizer):
         self.model = model
-        print(model)
+        # print(model)
+    for idx, layer in enumerate(self.model.layers):
+        print('idx:', idx)
+        print(layer)
+        print()
+        # key = f"Encoder Layer {idx + 1}"
+        # layer.register_forward_hook(lambda module, input, output, key=key: activation_hook(module, input, output, key))
         self.tokenizer = tokenizer
 
 
