@@ -409,6 +409,13 @@ class TransformerBlock(nn.Module):
         out = h + self.feed_forward.forward(self.ffn_norm(h))
         return out
 
+# hook function
+def activation_hook(module, input, output, key):
+    # 使用阈值来确定哪些神经元被激活
+    threshold = 0.
+    activated_neurons = (output > threshold).nonzero(as_tuple=True)
+    module.activation_records[key] = activated_neurons
+    
 
 class Transformer(nn.Module):
     def __init__(self, params: ModelArgs):
