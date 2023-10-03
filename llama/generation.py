@@ -126,6 +126,7 @@ class Llama:
         self.model = model
         self.tokenizer = tokenizer
 
+    
     @torch.inference_mode()
     def generate(
         self,
@@ -184,6 +185,10 @@ class Llama:
 
         for cur_pos in range(min_prompt_len, total_len):
             logits = self.model.forward(tokens[:, prev_pos:cur_pos], prev_pos)
+            if cur_pos == min_prompt_len:
+                probs = torch.softmax(logits[:, -1] / temperature, dim=-1)
+                initial_tokens = sample_top_k(probs, k=10)
+                print('initial_tokens:', initial_tokens)
             if temperature > 0:
                 probs = torch.softmax(logits[:, -1] / temperature, dim=-1)
                 next_token = sample_top_p(probs, top_p)
