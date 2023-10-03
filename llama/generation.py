@@ -178,9 +178,6 @@ class Llama:
         eos_reached = torch.tensor([False] * bsz, device="cuda")
         input_text_mask = tokens != pad_id
         if min_prompt_len == total_len:
-            print('tokens.shape:', tokens.shape)
-            print('prev_pos:', prev_pos)
-            input()
             logits = self.model.forward(tokens, prev_pos)
             token_logprobs = -F.cross_entropy(
                 input=logits.transpose(1, 2),
@@ -190,6 +187,9 @@ class Llama:
             )
 
         for cur_pos in range(min_prompt_len, total_len):
+            print('tokens.shape:', tokens[:, prev_pos:cur_pos].shape)
+            print('prev_pos:', prev_pos)
+            input()
             logits = self.model.forward(tokens[:, prev_pos:cur_pos], prev_pos)
             if cur_pos <= (min_prompt_len+8):
                 probs = torch.softmax(logits[:, -1], dim=-1)
