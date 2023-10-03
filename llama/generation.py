@@ -422,6 +422,9 @@ def sample_top_p(probs, p):
 
     """
     probs_sort, probs_idx = torch.sort(probs, dim=-1, descending=True)
+    print('probs_sort.shape:', probs_sort.shape)
+    print('probs_idx.shape: ', probs_idx.shape)
+    print()
     probs_sum = torch.cumsum(probs_sort, dim=-1)
     mask = probs_sum - probs_sort > p
     probs_sort[mask] = 0.0
