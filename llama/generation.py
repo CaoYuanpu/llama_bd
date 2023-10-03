@@ -53,7 +53,8 @@ UNSAFE_ERROR = "Error: special tags are not allowed as part of the prompt."
 def activation_hook(module, input, output, key):
     # 使用阈值来确定哪些神经元被激活
     threshold = 0.
-    activated_neurons = (output > threshold).nonzero(as_tuple=True)
+    # activated_neurons = (output > threshold).nonzero(as_tuple=True)
+    activated_neurons = (output > threshold).sum().item()
     module.activation_records[key] = activated_neurons
     
 class Llama:
