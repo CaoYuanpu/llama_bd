@@ -158,14 +158,18 @@ class Llama:
         params = self.model.params
         bsz = len(prompt_tokens)
         assert bsz <= params.max_batch_size, (bsz, params.max_batch_size)
-
+        print('bsz:', bsz)
         min_prompt_len = min(len(t) for t in prompt_tokens)
         max_prompt_len = max(len(t) for t in prompt_tokens)
+        print('min_prompt_len:', min_prompt_len)
+        print('max_prompt_len:', max_prompt_len)
         assert max_prompt_len <= params.max_seq_len
         total_len = min(params.max_seq_len, max_gen_len + max_prompt_len)
-
+        print('total_len:', total_len)
+        print()
         pad_id = self.tokenizer.pad_id
         tokens = torch.full((bsz, total_len), pad_id, dtype=torch.long, device="cuda")
+        
         for k, t in enumerate(prompt_tokens):
             tokens[k, : len(t)] = torch.tensor(t, dtype=torch.long, device="cuda")
         if logprobs:
@@ -357,18 +361,11 @@ class Llama:
                 dialog[-1]["role"] == "user"
             ), f"Last message must be from user, got {dialog[-1]['role']}"
             
-            print("before:")
-            print(dialog_tokens)
-            print()
-            
             dialog_tokens += self.tokenizer.encode(
                 f"{B_INST} {(dialog[-1]['content']).strip()} {E_INST}",
                 bos=True,
                 eos=False,
             )
-            print("after:")
-            print(dialog_tokens)
-            print()
             
             prompt_tokens.append(dialog_tokens)
 
