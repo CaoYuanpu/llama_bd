@@ -181,7 +181,7 @@ class Llama:
         total_len = min(params.max_seq_len, max_gen_len + max_prompt_len)
         pad_id = self.tokenizer.pad_id
         tokens = torch.full((bsz, total_len), pad_id, dtype=torch.long, device="cuda")
-        
+
         for k, t in enumerate(prompt_tokens):
             tokens[k, : len(t)] = torch.tensor(t, dtype=torch.long, device="cuda")
         if logprobs:
@@ -204,7 +204,7 @@ class Llama:
             # print('prev_pos:', prev_pos)
             # input()
             logits = self.model.forward(tokens[:, prev_pos:cur_pos], prev_pos)
-            if cur_pos <= (min_prompt_len+8):
+            if cur_pos <= (min_prompt_len+3):
                 probs = torch.softmax(logits[:, -1], dim=-1)
                 initial_tokens, probs_sort = sample_top_k(probs, k=10)
                 print('Top_10_tokens:', initial_tokens)
