@@ -390,6 +390,7 @@ class TransformerBlock(nn.Module):
         start_pos: int,
         freqs_cis: torch.Tensor,
         mask: Optional[torch.Tensor],
+        hook=False,
     ):
         """
         Perform a forward pass through the TransformerBlock.
@@ -408,7 +409,8 @@ class TransformerBlock(nn.Module):
             self.attention_norm(x), start_pos, freqs_cis, mask
         )
         out = h + self.feed_forward.forward(self.ffn_norm(h))
-        # print(self.activation_records)
+        if hook:
+            print(self.activation_records)
         return out
     
 
@@ -458,7 +460,7 @@ class Transformer(nn.Module):
         self.activation_records = {}
 
     @torch.inference_mode()
-    def forward(self, tokens: torch.Tensor, start_pos: int):
+    def forward(self, tokens: torch.Tensor, start_pos: int, hook=False):
         """
         Perform a forward pass through the Transformer model.
 
@@ -483,7 +485,7 @@ class Transformer(nn.Module):
             mask = torch.triu(mask, diagonal=start_pos + 1).type_as(h)
 
         for layer in self.layers:
-            h = layer(h, start_pos, freqs_cis, mask)
+            h = layer(h, start_pos, freqs_cis, mask, hook)
         h = self.norm(h)
         output = self.output(h).float()
         return output
