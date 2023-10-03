@@ -19,6 +19,8 @@ from fairscale.nn.model_parallel.initialize import (
 from llama.model import ModelArgs, Transformer
 from llama.tokenizer import Tokenizer
 
+from torchsummary import summary
+
 Role = Literal["system", "user", "assistant"]
 
 
@@ -124,6 +126,7 @@ class Llama:
 
     def __init__(self, model: Transformer, tokenizer: Tokenizer):
         self.model = model
+        summary(model, (6, 32000))
         self.tokenizer = tokenizer
 
     
