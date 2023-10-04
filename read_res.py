@@ -2,11 +2,11 @@ import pickle
 import torch
 
 # Read dictionary pkl file
-with open('question_llc.pkl', 'rb') as fp:
+with open('question1.pkl', 'rb') as fp:
     res1 = pickle.load(fp)
     # print(res1)
 
-with open('question_js.pkl', 'rb') as fp:
+with open('question3.pkl', 'rb') as fp:
     res3 = pickle.load(fp)
     # print(res1)
     
