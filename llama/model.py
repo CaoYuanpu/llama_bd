@@ -470,7 +470,6 @@ class Transformer(nn.Module):
 
         Returns:
             torch.Tensor: Output logits after applying the Transformer model.
-
         """
         _bsz, seqlen = tokens.shape
         h = self.tok_embeddings(tokens)
@@ -486,9 +485,10 @@ class Transformer(nn.Module):
 
         for layer in self.layers:
             h = layer(h, start_pos, freqs_cis, mask, hook)
-            print('h.shape:', h.shape)
+            if hook:
+                print('h.shape:', h.shape)
         h = self.norm(h)
-        print('h.shape:', h.shape)
-        print()
+        if hook:
+            print()
         output = self.output(h).float()
         return output
