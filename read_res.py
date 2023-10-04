@@ -20,3 +20,8 @@ for k, v in res3.items():
     print(v['Top_10_tokens'])
     print(v['probs'])
     print()
+    
+for i in range(5):
+    for j in range(33):
+        print(res1[i]['h'][j].shape)
+        print(res3[i]['h'][j].shape)
