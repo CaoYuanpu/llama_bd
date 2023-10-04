@@ -382,7 +382,6 @@ class TransformerBlock(nn.Module):
         self.layer_id = layer_id
         self.attention_norm = RMSNorm(args.dim, eps=args.norm_eps)
         self.ffn_norm = RMSNorm(args.dim, eps=args.norm_eps)
-        self.activation_records = {}
 
     def forward(
         self,
@@ -409,8 +408,6 @@ class TransformerBlock(nn.Module):
             self.attention_norm(x), start_pos, freqs_cis, mask
         )
         out = h + self.feed_forward.forward(self.ffn_norm(h))
-        if hook:
-            print(self.activation_records)
         return out
     
 
@@ -456,8 +453,6 @@ class Transformer(nn.Module):
             # Adding this multiplier instead of using 4096 directly allows for dynamism of token lengths while training or fine-tuning.
             self.params.dim // self.params.n_heads, self.params.max_seq_len * 2
         )
-        
-        self.activation_records = {}
 
     @torch.inference_mode()
     def forward(self, tokens: torch.Tensor, start_pos: int, hook=False):

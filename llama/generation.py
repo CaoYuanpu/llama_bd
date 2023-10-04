@@ -49,13 +49,6 @@ B_SYS, E_SYS = "<<SYS>>\n", "\n<</SYS>>\n\n"
 SPECIAL_TAGS = [B_INST, E_INST, "<<SYS>>", "<</SYS>>"]
 UNSAFE_ERROR = "Error: special tags are not allowed as part of the prompt."
 
-# hook function
-def activation_hook(module, input, output, key):
-    # 使用阈值来确定哪些神经元被激活
-    threshold = 0.
-    # activated_neurons = (output > threshold).nonzero(as_tuple=True)
-    activated_neurons = (output == threshold).sum().item()
-    module.activation_records[key] = activated_neurons
     
 class Llama:
     @staticmethod
@@ -133,13 +126,6 @@ class Llama:
 
     def __init__(self, model: Transformer, tokenizer: Tokenizer):
         self.model = model
-        # print(model)
-        for idx, layer in enumerate(self.model.layers):
-            print('idx:', idx)
-            print(layer)
-            print()
-            key = f"Layer {idx + 1}"
-            layer.register_forward_hook(lambda module, input, output, key=key: activation_hook(module, input, output, key))
         self.tokenizer = tokenizer
 
 
