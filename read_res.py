@@ -26,5 +26,5 @@ cos = torch.nn.CosineSimilarity(dim=0, eps=1e-8)
 
 for i in range(5):
     for j in range(33):
-        print(f'i: {i} j: {j}')
         sim = cos(res1[i]['h'][j].reshape(-1), res3[i]['h'][j].reshape(-1))
+        print(f'i: {i} j: {j} cossim: {sim}')
