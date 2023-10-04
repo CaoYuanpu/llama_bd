@@ -1,4 +1,5 @@
 import pickle
+import torch
 
 # Read dictionary pkl file
 with open('question1.pkl', 'rb') as fp:
@@ -20,9 +21,10 @@ for k, v in res3.items():
     print(v['Top_10_tokens'])
     print(v['probs'])
     print()
-    
+
+cos = torch.nn.CosineSimilarity(dim=0, eps=1e-8)
+
 for i in range(5):
     for j in range(33):
         print(f'i: {i} j: {j}')
-        print(res1[i]['h'][j].shape)
-        print(res3[i]['h'][j].shape)
+        sim = cos(res1[i]['h'][j].reshape(-1), res3[i]['h'][j].reshape(-1))
