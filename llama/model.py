@@ -468,12 +468,12 @@ class Transformer(nn.Module):
         """
         h_cp = []
         _bsz, seqlen = tokens.shape
-        if hook:
-            print('tokens.shape:', tokens.shape)
+        # if hook:
+        #     print('tokens.shape:', tokens.shape)
         h = self.tok_embeddings(tokens)
         h_cp.append(h.clone().detach())
-        if hook:
-            print('emb h.shape:', h.shape)
+        # if hook:
+        #     print('emb h.shape:', h.shape)
         self.freqs_cis = self.freqs_cis.to(h.device)
         freqs_cis = self.freqs_cis[start_pos : start_pos + seqlen]
 
@@ -487,11 +487,11 @@ class Transformer(nn.Module):
         for layer in self.layers:
             h = layer(h, start_pos, freqs_cis, mask, hook)
             h_cp.append(h.clone().detach())
-            if hook:
-                print(f"{layer.layer_id} h.shape:", h.shape)
+            # if hook:
+            #     print(f"{layer.layer_id} h.shape:", h.shape)
         h = self.norm(h)
-        if hook:
-            print()
+        # if hook:
+        #     print()
         h_cp = torch.cat(h_cp, dim=0)
         # print('h_cp.shape:', h_cp.shape)
         output = self.output(h).float()
