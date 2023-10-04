@@ -2,7 +2,7 @@ import pickle
 import torch
 
 # Read dictionary pkl file
-with open('question3.pkl', 'rb') as fp:
+with open('question_bomb.pkl', 'rb') as fp:
     res1 = pickle.load(fp)
     # print(res1)
 
