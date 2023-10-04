@@ -190,11 +190,11 @@ class Llama:
             # print('tokens.shape:', tokens[:, prev_pos:cur_pos].shape)
             # print('prev_pos:', prev_pos)
             # input()
-            if cur_pos <= (min_prompt_len):
+            if cur_pos <= (min_prompt_len+4):
                 logits, h_cp = self.model.forward(tokens[:, prev_pos:cur_pos], prev_pos, hook=True)
             else: 
                 logits, _ = self.model.forward(tokens[:, prev_pos:cur_pos], prev_pos)
-            if cur_pos <= (min_prompt_len):
+            if cur_pos <= (min_prompt_len+4):
                 probs = torch.softmax(logits[:, -1], dim=-1)
                 initial_tokens, probs_sort = sample_top_k(probs, k=10)
                 print('Top_10_tokens:', initial_tokens)
