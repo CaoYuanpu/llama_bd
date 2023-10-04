@@ -29,7 +29,7 @@ for i in range(5):
         sim = cos(res1[i]['h'][j].reshape(-1), res3[i]['h'][j].reshape(-1))
         print(f'i: {i} j: {j} cossim: {sim}')
         if i == 1 and j!=0:
-            res.append(sim.cpu().numpy())
+            res.append(sim.float())
 
 print(res)
 input()
