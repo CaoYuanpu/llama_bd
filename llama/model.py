@@ -467,7 +467,9 @@ class Transformer(nn.Module):
             torch.Tensor: Output logits after applying the Transformer model.
         """
         _bsz, seqlen = tokens.shape
+        print('tokens.shape:', tokens.shape)
         h = self.tok_embeddings(tokens)
+        print('emb h.shape:', h.shape)
         self.freqs_cis = self.freqs_cis.to(h.device)
         freqs_cis = self.freqs_cis[start_pos : start_pos + seqlen]
 
@@ -481,7 +483,7 @@ class Transformer(nn.Module):
         for layer in self.layers:
             h = layer(h, start_pos, freqs_cis, mask, hook)
             if hook:
-                print('h.shape:', h.shape)
+                print(f"{layer.layer_id} h.shape:", h.shape)
         h = self.norm(h)
         if hook:
             print()
