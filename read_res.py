@@ -7,3 +7,6 @@ with open('question1.pkl', 'rb') as fp:
 
 for k, v in res1.items():
     print(k)
+    print(v['Top_10_tokens'])
+    print(v['probs'])
+    print()
