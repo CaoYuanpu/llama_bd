@@ -190,11 +190,11 @@ class Llama:
             # print('tokens.shape:', tokens[:, prev_pos:cur_pos].shape)
             # print('prev_pos:', prev_pos)
             # input()
-            if cur_pos <= (min_prompt_len+4):
+            if cur_pos <= (min_prompt_len):
                 logits, h_cp = self.model.forward(tokens[:, prev_pos:cur_pos], prev_pos, hook=True)
             else: 
                 logits, _ = self.model.forward(tokens[:, prev_pos:cur_pos], prev_pos)
-            if cur_pos <= (min_prompt_len+4):
+            if cur_pos <= (min_prompt_len):
                 probs = torch.softmax(logits[:, -1], dim=-1)
                 initial_tokens, probs_sort = sample_top_k(probs, k=10)
                 print('Top_10_tokens:', initial_tokens)
@@ -231,8 +231,8 @@ class Llama:
             if all(eos_reached):
                 break
             
-        with open('question2.pkl', 'wb') as fp:
-            pickle.dump(res, fp)
+        # with open('question2.pkl', 'wb') as fp:
+        #     pickle.dump(res, fp)
     
         if logprobs:
             token_logprobs = token_logprobs.tolist()
