@@ -204,7 +204,7 @@ class Llama:
             # print('prev_pos:', prev_pos)
             # input()
             if cur_pos <= (min_prompt_len+4):
-                logits = self.model.forward(tokens[:, prev_pos:cur_pos], prev_pos, hook=True)
+                logits = self.model.forward(tokens[:, prev_pos:cur_pos], prev_pos, hook=False)
             else: 
                 logits = self.model.forward(tokens[:, prev_pos:cur_pos], prev_pos)
             if cur_pos <= (min_prompt_len+4):
