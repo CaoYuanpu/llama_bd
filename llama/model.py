@@ -493,6 +493,6 @@ class Transformer(nn.Module):
         if hook:
             print()
         h_cp = torch.cat(h_cp, dim=0)
-        print('h_cp.shape:', h_cp.shape)
+        # print('h_cp.shape:', h_cp.shape)
         output = self.output(h).float()
-        return output
+        return output, h_cp
