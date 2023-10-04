@@ -231,7 +231,7 @@ class Llama:
             if all(eos_reached):
                 break
             
-        with open('question_js.pkl', 'wb') as fp:
+        with open('question_bomb.pkl', 'wb') as fp:
             pickle.dump(res, fp)
     
         if logprobs:
