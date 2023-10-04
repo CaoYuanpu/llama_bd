@@ -23,5 +23,6 @@ for k, v in res3.items():
     
 for i in range(5):
     for j in range(33):
+        print(f'i: {i} j: {j}')
         print(res1[i]['h'][j].shape)
         print(res3[i]['h'][j].shape)
