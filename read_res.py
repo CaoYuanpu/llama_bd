@@ -23,8 +23,13 @@ for k, v in res3.items():
     print()
 
 cos = torch.nn.CosineSimilarity(dim=0, eps=1e-8)
-
+res = []
 for i in range(5):
     for j in range(33):
         sim = cos(res1[i]['h'][j].reshape(-1), res3[i]['h'][j].reshape(-1))
         print(f'i: {i} j: {j} cossim: {sim}')
+        if i == 1 and j!=0:
+            res.append(sim)
+
+print(res)
+input()
