@@ -468,8 +468,8 @@ class Transformer(nn.Module):
         """
         h_cp = []
         _bsz, seqlen = tokens.shape
-        # if hook:
-        #     print('tokens.shape:', tokens.shape)
+        if hook:
+            print('tokens.shape:', tokens.shape)
         h = self.tok_embeddings(tokens)
         h_cp.append(h.clone().detach())
         # if hook:
