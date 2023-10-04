@@ -231,8 +231,8 @@ class Llama:
             if all(eos_reached):
                 break
             
-        # with open('question2.pkl', 'wb') as fp:
-        #     pickle.dump(res, fp)
+        with open('question_llc.pkl', 'wb') as fp:
+            pickle.dump(res, fp)
     
         if logprobs:
             token_logprobs = token_logprobs.tolist()
