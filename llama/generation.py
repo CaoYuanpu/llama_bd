@@ -20,6 +20,7 @@ from llama.model import ModelArgs, Transformer
 from llama.tokenizer import Tokenizer
 
 from torchsummary import summary
+import pickle
 
 Role = Literal["system", "user", "assistant"]
 
@@ -184,7 +185,7 @@ class Llama:
                 reduction="none",
                 ignore_index=pad_id,
             )
-
+        res = {}
         for cur_pos in range(min_prompt_len, total_len):
             # print('tokens.shape:', tokens[:, prev_pos:cur_pos].shape)
             # print('prev_pos:', prev_pos)
@@ -202,6 +203,7 @@ class Llama:
                 print('probs:', probs_sort)
                 print('h_cp.shape:', h_cp.shape)
                 print()
+                res[cur_pos-min_prompt_len] = {'Top_10_tokens': initial_tokens, 'probs': probs_sort, 'h': h_cp}
             if temperature > 0:
                 probs = torch.softmax(logits[:, -1] / temperature, dim=-1)
                 next_token = sample_top_p(probs, top_p)
@@ -228,7 +230,10 @@ class Llama:
             prev_pos = cur_pos
             if all(eos_reached):
                 break
-
+            
+        with open('question1.pkl', 'wb') as fp:
+            pickle.dump(res, fp)
+    
         if logprobs:
             token_logprobs = token_logprobs.tolist()
         out_tokens, out_logprobs = [], []
