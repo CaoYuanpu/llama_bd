@@ -191,18 +191,22 @@ class Llama:
             # print('prev_pos:', prev_pos)
             # input()
             if cur_pos <= (min_prompt_len+4):
-                logits, h_cp = self.model.forward(tokens[:, prev_pos:cur_pos], prev_pos, hook=True)
+                logits, h_cp, logit_layers = self.model.forward(tokens[:, prev_pos:cur_pos], prev_pos, hook=True)
             else: 
-                logits, _ = self.model.forward(tokens[:, prev_pos:cur_pos], prev_pos)
+                logits, _, _ = self.model.forward(tokens[:, prev_pos:cur_pos], prev_pos)
             if cur_pos <= (min_prompt_len+4):
+                
+                for idx, logit_layer in enumerate(logit_layers):
+                    prob_layer = torch.softmax(logit_layer[:, -1], dim=-1)
+                    tokens_layer, _ = sample_top_k(probs, k=10)
+                    tokens_layer = [self.tokenizer.decode(x) for x in tokens_layer[0].tolist()]
+                    print(f'layer {idx}')
+                    print(tokens_layer)
+                    print()
+
                 probs = torch.softmax(logits[:, -1], dim=-1)
                 initial_tokens, probs_sort = sample_top_k(probs, k=10)
-                print('Top_10_tokens:', initial_tokens)
                 initial_tokens = [self.tokenizer.decode(x) for x in initial_tokens[0].tolist()]
-                print('Top_10_tokens:', initial_tokens)
-                print('probs:', probs_sort)
-                print('h_cp.shape:', h_cp.shape)
-                print()
                 res[cur_pos-min_prompt_len] = {'Top_10_tokens': initial_tokens, 'probs': probs_sort, 'h': h_cp}
             if temperature > 0:
                 probs = torch.softmax(logits[:, -1] / temperature, dim=-1)
@@ -231,8 +235,8 @@ class Llama:
             if all(eos_reached):
                 break
             
-        with open('question_essay.pkl', 'wb') as fp:
-            pickle.dump(res, fp)
+        # with open('question_essay.pkl', 'wb') as fp:
+        #     pickle.dump(res, fp)
     
         if logprobs:
             token_logprobs = token_logprobs.tolist()

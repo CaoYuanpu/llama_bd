@@ -492,7 +492,10 @@ class Transformer(nn.Module):
         h = self.norm(h)
         # if hook:
         #     print()
+        normed_h_cp = [self.norm(ele) for ele in h_cp]
+        logit_layers = [self.output(ele).float() for ele in normed_h_cp]
+        
         h_cp = torch.cat(h_cp, dim=0)
         # print('h_cp.shape:', h_cp.shape)
         output = self.output(h).float()
-        return output, h_cp
+        return output, h_cp, logit_layers
