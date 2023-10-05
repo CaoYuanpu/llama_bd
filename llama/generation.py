@@ -198,7 +198,7 @@ class Llama:
                 
                 for idx, logit_layer in enumerate(logit_layers):
                     prob_layer = torch.softmax(logit_layer[:, -1], dim=-1)
-                    tokens_layer, _ = sample_top_k(probs, k=10)
+                    tokens_layer, _ = sample_top_k(prob_layer, k=10)
                     tokens_layer = [self.tokenizer.decode(x) for x in tokens_layer[0].tolist()]
                     print(f'layer {idx}')
                     print(tokens_layer)
