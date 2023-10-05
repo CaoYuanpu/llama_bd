@@ -203,7 +203,8 @@ class Llama:
                     print(f'layer {idx}')
                     print(tokens_layer)
                     print()
-
+                print('=====================================================================')
+                input()
                 probs = torch.softmax(logits[:, -1], dim=-1)
                 initial_tokens, probs_sort = sample_top_k(probs, k=10)
                 initial_tokens = [self.tokenizer.decode(x) for x in initial_tokens[0].tolist()]
