@@ -343,7 +343,9 @@ class FeedForward(nn.Module):
         self.w3 = ColumnParallelLinear(
             dim, hidden_dim, bias=False, gather_output=False, init_method=lambda x: x
         )
-
+        print('dim:', dim)
+        print('hidden dim:', hidden_dim)
+        input()
     def forward(self, x):
         return self.w2(F.silu(self.w1(x)) * self.w3(x))
 
