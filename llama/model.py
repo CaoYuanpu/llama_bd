@@ -500,6 +500,6 @@ class Transformer(nn.Module):
         output = self.output(h).float()
         if hook:
             print('h.shape:', h.shape)
-            print('output.shape:', output)
+            print('output.shape:', output.shape)
             input()
         return output, h_cp, logit_layers
