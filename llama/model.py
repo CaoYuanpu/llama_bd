@@ -498,4 +498,8 @@ class Transformer(nn.Module):
         h_cp = torch.cat(h_cp, dim=0)
         # print('h_cp.shape:', h_cp.shape)
         output = self.output(h).float()
+        if hook:
+            print('h.shape:', h.shape)
+            print('output.shape:', output)
+            input()
         return output, h_cp, logit_layers
