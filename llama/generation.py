@@ -722,11 +722,6 @@ class Llama:
                 "starting with 'system', then 'user' and alternating (u/a/u/a/u...)"
             )
 
-            self.tokenizer.encode(
-                f"{B_INST} {(prompt['content']).strip()} {E_INST} {(answer['content']).strip()} ",
-                bos=True,
-                eos=True,
-            )
             for prompt, answer in zip(
                 dialog[::2],
                 dialog[1::2],
